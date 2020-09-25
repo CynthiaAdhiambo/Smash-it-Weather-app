@@ -1,8 +1,14 @@
-if ("serviceWorker" in navigator) {
-    // register service worker
-    navigator.serviceWorker.register("service-worker.js");
-  }
-
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
   /* Toggle between adding and removing the "responsive" class to menu
      when the user clicks on the icon */
 // function menuToggleFunction() {
@@ -24,11 +30,14 @@ var clouds = document.querySelector('.clouds');
 var button= document.querySelector('.searchCityWeather');
 
 
-/* History of Weather Info */
-var main_history = document.querySelector('#name_history');
-var temp_history = document.querySelector('.temp_history');
-var desc_history = document.querySelector('.desc_history');
-var clouds_history = document.querySelector('.clouds_history');
+/* Local Storage Declarations */
+
+let itemsArray = localStorage.getItem('cityNames')
+  ? JSON.parse(localStorage.getItem('cityNames'))
+  : [];
+
+localStorage.setItem('cityNames', JSON.stringify(itemsArray));
+const data = JSON.parse(localStorage.getItem('cityNames'));
 
 const proxy = 'https://cors-anywhere.herokuapp.com/';
 const api_key = 'bb3e93357f206c450738a7ccb85ff56b'
@@ -46,15 +55,17 @@ if(navigator.geolocation){
     return response.json();
   })
   .then(function (data) {
+
     var tempValue = data['main']['temp'];
-  var nameValue = data ['name'];
-  var descValue = data['weather'][0]['description'];
+    var nameValue = data ['name'];
+    var descValue = data['weather'][0]['description'];
 
-  main.innerHTML = nameValue;
-  desc.innerHTML = "Desc - "+descValue;
-  temp.innerHTML = "Temp - "+tempValue;
+    main.innerHTML = nameValue;
+    desc.innerHTML = "Desc - "+descValue;
+    temp.innerHTML = "Temp - "+tempValue;
 
-  console.log(data);
+    itemsArray.push(data);
+    localStorage.setItem('cityNames', JSON.stringify(itemsArray));
   })
   .catch(function (err) {
     console.log(err);
@@ -68,6 +79,7 @@ button.addEventListener('click', function(){
   fetch(url)
   .then(response => response.json())
   .then(data => {
+
     var tempValue = data['main']['temp'];
     var nameValue = data['name'];
     var descValue = data['weather'][0]['description'];
@@ -75,7 +87,15 @@ button.addEventListener('click', function(){
     main.innerHTML = nameValue;
     desc.innerHTML = "Desc - "+descValue;
     temp.innerHTML = "Temp - "+tempValue;
-    input.value ="";
+    input.value ='';
+
+    itemsArray.push(data);
+    localStorage.setItem('cityNames', JSON.stringify(itemsArray));
+    console.log("city names");
+    console.log(localStorage.getItem('cityNames'));
+
+
+
 
   })
 
@@ -83,4 +103,5 @@ button.addEventListener('click', function(){
   })
 
 }
+
 

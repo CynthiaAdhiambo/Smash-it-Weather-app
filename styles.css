@@ -21,10 +21,10 @@ body {
 
 #displayCurrentWeather, #moreInformation {
 
-  font-size: 40px;
+  font-size: 30px;
   font-family: headerfont;
   text-shadow: 5px 5px 5px #3b3b3a;
-  color: black;
+  color: rgb(27, 27, 27);
   padding: 15px;
   margin: 8px 0px;
   font-weight: bold;
@@ -116,8 +116,7 @@ input[type="submit"]{
   width: 60%;
   height: 55px;
   padding: 5px 10px;
-  background: #e7e7e7;
-  border: none;
+  border: solid 1px;
   border-radius: 1px;
   font-family: "Nunito",sans-serif;
   font-weight:bold;
@@ -126,7 +125,6 @@ input[type="submit"]{
 
 #homeSection {
   width: 50%;
-  background-image: url('./Images/card\ background.jpg');
   height: 40vh;
   margin: 50px auto;
   border-radius: 2px;
